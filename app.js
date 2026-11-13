@@ -1,5 +1,6 @@
 import { IDS, fixture, visible, converged, syncActions } from './core.js';
 const $ = (id) => document.getElementById(id);
+const openOperations = new Set();
 let actions = [],
   sim = null,
   cursor = 0,
@@ -16,6 +17,7 @@ const el = (tag, text) => {
 };
 function status(text) {
   $('status').textContent = text;
+  $('history-status').textContent = text;
 }
 function controls() {
   const past = cursor < actions.length;
@@ -142,6 +144,15 @@ function render() {
     const caption = el('div', 'PN COUNTER');
     caption.className = 'counter-label';
     card.append(counter, caption);
+    const operations = el('details');
+    operations.className = 'local-operations';
+    operations.open = openOperations.has(node.id);
+    operations.append(el('summary', 'Edit local state'));
+    operations.addEventListener('toggle', () => {
+      if (operations.open) openOperations.add(node.id);
+      else openOperations.delete(node.id);
+    });
+    card.append(operations);
     const form = el('form'),
       [wrap, input] = field('Set label', drafts[node.id].value, 'text', `${node.id} set label`);
     input.maxLength = 40;
@@ -166,7 +177,7 @@ function render() {
       e.preventDefault();
       append([{ type: 'add', node: node.id, value: input.value }]);
     });
-    card.append(form);
+    operations.append(form);
     const countForm = el('form'),
       [amountWrap, amount] = field(
         'Counter change / signed',
@@ -192,7 +203,7 @@ function render() {
       e.preventDefault();
       apply.click();
     });
-    card.append(countForm);
+    operations.append(countForm);
     const send = el('div');
     send.className = 'send';
     const to = el('select');
@@ -337,4 +348,6 @@ $('file').addEventListener('change', async () => {
     $('file').value = '';
   }
 });
+$('history-open').addEventListener('click', () => $('history-dialog').showModal());
+$('history-close').addEventListener('click', () => $('history-dialog').close());
 run(fixture());

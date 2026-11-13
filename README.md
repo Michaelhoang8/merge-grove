@@ -4,6 +4,8 @@ A deterministic replicated-state simulator. Three independent replicas maintain 
 
 ![Merge Grove](docs/workbench.png)
 
+Each replica has its own state panel, expandable local controls, and snapshot destination. Message delivery appears below the replicas. Open History to replay actions or export state evidence.
+
 ## Run
 
 Requires Python 3.10+. No runtime dependencies or API keys.

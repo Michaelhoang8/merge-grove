@@ -8,18 +8,13 @@
   </head>
   <body>
     <header>
-      <a href="#">merge grove <span>⋮</span></a
-      ><span>REPLICATED DATA / OBSERVED-REMOVE SET + PN COUNTER</span
-      ><label class="upload">Open scenario<input id="file" type="file" accept=".json" /></label>
+      <h1>Merge Grove</h1>
+      <button id="history-open">History</button>
+      <label class="upload">Open scenario<input id="file" type="file" accept=".json" /></label>
     </header>
     <main>
-      <section class="hero">
-        <p>SEPARATE VIEWS. A SHARED EVENTUAL STATE.</p>
-        <h1>Let the replicas<br />disagree for a while.</h1>
-        <div>Make a change in one place.<br />Choose when the others hear about it.</div>
-      </section>
       <section class="toolbar">
-        <button id="sync" class="primary">Synchronize all replicas ↗</button
+        <button id="sync" class="primary">Synchronize replicas</button
         ><button id="example">Concurrent add / remove example</button
         ><button id="empty">Empty scenario</button><button id="undo">Undo action</button
         ><button id="save">Save scenario</button>
@@ -48,19 +43,6 @@
         </p>
         <div id="queue"></div>
       </section>
-      <section class="history">
-        <div class="section-title">
-          <h2>Replay the scenario</h2>
-          <button id="latest">Latest state</button>
-        </div>
-        <label
-          >After action <output id="cursor-label">0</output
-          ><input id="cursor" type="range" min="0" max="0" value="0" step="1"
-        /></label>
-        <p id="history-note"></p>
-        <ol id="actions"></ol>
-        <button id="report">Export state evidence</button>
-      </section>
       <details>
         <summary>Why these states converge</summary>
         <p>
@@ -87,8 +69,23 @@
           the simulated history, not a live distributed system.
         </p>
       </details>
-      <footer>THREE SIMULATED REPLICAS · NO CENTRAL MERGE AUTHORITY · LOCAL SCENARIOS</footer>
     </main>
+    <dialog class="history" id="history-dialog" aria-labelledby="history-title">
+      <div class="section-title">
+        <h2 id="history-title">Scenario history</h2>
+        <button id="history-close">Close</button>
+        <button id="latest">Latest state</button>
+      </div>
+      <label
+        >After action <output id="cursor-label">0</output
+        ><input id="cursor" type="range" min="0" max="0" value="0" step="1"
+      /></label>
+      <p id="history-status" role="status"></p>
+      <p id="history-note"></p>
+      <ol id="actions"></ol>
+      <button id="report">Export state evidence</button>
+    </dialog>
+
     <script type="module" src="app.js"></script>
   </body>
 </html>
