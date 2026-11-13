@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Merge Grove</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <a href="#">merge grove <span>⋮</span></a
+      ><span>REPLICATED DATA / OBSERVED-REMOVE SET + PN COUNTER</span
+      ><label class="upload">Open scenario<input id="file" type="file" accept=".json" /></label>
+    </header>
+    <main>
+      <section class="hero">
+        <p>SEPARATE VIEWS. A SHARED EVENTUAL STATE.</p>
+        <h1>Let the replicas<br />disagree for a while.</h1>
+        <div>Make a change in one place.<br />Choose when the others hear about it.</div>
+      </section>
+      <section class="toolbar">
+        <button id="sync" class="primary">Synchronize all replicas ↗</button
+        ><button id="example">Concurrent add / remove example</button
+        ><button id="empty">Empty scenario</button><button id="undo">Undo action</button
+        ><button id="save">Save scenario</button>
+      </section>
+      <p id="status" role="status" aria-live="polite"></p>
+      <section class="network">
+        <strong id="agreement"></strong>
+        <div>
+          <label><input id="AB" type="checkbox" />Partition A ↔ B</label
+          ><label><input id="AC" type="checkbox" />Partition A ↔ C</label
+          ><label><input id="BC" type="checkbox" />Partition B ↔ C</label>
+        </div>
+      </section>
+      <div id="historical" hidden>
+        Historical view. Return to the latest action to issue commands.
+      </div>
+      <section id="replicas" class="replicas" aria-label="Replicas"></section>
+      <section>
+        <div class="section-title">
+          <h2>Messages in transit</h2>
+          <span id="queue-count"></span>
+        </div>
+        <p class="note">
+          A message is an immutable snapshot captured when sent. Deliver it late, keep a copy for
+          duplicate delivery, or drop it.
+        </p>
+        <div id="queue"></div>
+      </section>
+      <section class="history">
+        <div class="section-title">
+          <h2>Replay the scenario</h2>
+          <button id="latest">Latest state</button>
+        </div>
+        <label
+          >After action <output id="cursor-label">0</output
+          ><input id="cursor" type="range" min="0" max="0" value="0" step="1"
+        /></label>
+        <p id="history-note"></p>
+        <ol id="actions"></ol>
+        <button id="report">Export state evidence</button>
+      </section>
+      <details>
+        <summary>Why these states converge</summary>
+        <p>
+          Each set addition has a unique replica-local tag. Removing a label records only the tags
+          that replica has observed. A concurrent addition with a different tag therefore survives.
+          Once a tag is removed, an older snapshot cannot resurrect it. Tombstones remain for the
+          lifetime of the scenario.
+        </p>
+        <p>
+          The PN counter stores separate nondecreasing positive and negative components for each
+          replica. Merge takes each component's maximum; the visible value is the sum of positives
+          minus the sum of negatives. Duplicate delivery never adds a counter component twice.
+        </p>
+        <p>
+          Set merge unions tagged additions and tombstones. Counter merge takes componentwise
+          maxima. Both are commutative, associative, and idempotent. Replicas converge after their
+          updates are delivered; permanent partitions or dropped updates can keep them apart. The
+          status compares full internal states, not just currently visible labels.
+        </p>
+        <p>
+          This is a deterministic simulation, not a network service. Up to 200 actions and 40 queued
+          snapshots are supported. Synchronization requires healed links and appends six
+          send/deliver pairs. Old queued snapshots remain available. Resetting or undoing changes
+          the simulated history, not a live distributed system.
+        </p>
+      </details>
+      <footer>THREE SIMULATED REPLICAS · NO CENTRAL MERGE AUTHORITY · LOCAL SCENARIOS</footer>
+    </main>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

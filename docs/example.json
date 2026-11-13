@@ -1,0 +1,121 @@
+{
+  "actions": [
+    {
+      "type": "add",
+      "node": "A",
+      "value": "apples"
+    },
+    {
+      "type": "send",
+      "from": "A",
+      "to": "B"
+    },
+    {
+      "type": "deliver",
+      "id": 1,
+      "keep": false
+    },
+    {
+      "type": "remove",
+      "node": "A",
+      "value": "apples"
+    },
+    {
+      "type": "add",
+      "node": "B",
+      "value": "apples"
+    },
+    {
+      "type": "increment",
+      "node": "A",
+      "amount": 3
+    },
+    {
+      "type": "increment",
+      "node": "B",
+      "amount": -1
+    },
+    {
+      "type": "send",
+      "from": "A",
+      "to": "B"
+    },
+    {
+      "type": "deliver",
+      "id": 2,
+      "keep": false
+    },
+    {
+      "type": "send",
+      "from": "A",
+      "to": "C"
+    },
+    {
+      "type": "deliver",
+      "id": 3,
+      "keep": false
+    },
+    {
+      "type": "send",
+      "from": "B",
+      "to": "A"
+    },
+    {
+      "type": "deliver",
+      "id": 4,
+      "keep": false
+    },
+    {
+      "type": "send",
+      "from": "B",
+      "to": "C"
+    },
+    {
+      "type": "deliver",
+      "id": 5,
+      "keep": false
+    },
+    {
+      "type": "send",
+      "from": "C",
+      "to": "A"
+    },
+    {
+      "type": "deliver",
+      "id": 6,
+      "keep": false
+    },
+    {
+      "type": "send",
+      "from": "C",
+      "to": "B"
+    },
+    {
+      "type": "deliver",
+      "id": 7,
+      "keep": false
+    },
+    {
+      "type": "partition",
+      "a": "A",
+      "b": "B",
+      "blocked": true
+    },
+    {
+      "type": "send",
+      "from": "A",
+      "to": "B"
+    },
+    {
+      "type": "partition",
+      "a": "A",
+      "b": "B",
+      "blocked": false
+    },
+    {
+      "type": "deliver",
+      "id": 8,
+      "keep": true
+    }
+  ]
+}
